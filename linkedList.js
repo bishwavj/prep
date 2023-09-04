@@ -1,26 +1,65 @@
-//10-->16-->20
-
-class List{
+class Node {
         constructor(data){
-                this.head = {
-                value : data,
-                next : null
-                }
-                this.tail = this.head;
-                this.length = 1;
-        }
-        appendNode(nodeData){
-                let newNode = {
-                        value: nodeData,
-                        next: null
-                };
-                this.tail.next = newNode;
-                this.tail = newNode;
-                this.length +=1;
+                this.head = data;
+                this.next = null;
         }
 }
 
-let mylist = new List(20);
-mylist.appendNode(40);
-mylist.appendNode(50);
-console.log(mylist);
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.size = 0;
+  }
+
+  add(data) { //add method
+    const newNode = new Node(data);
+
+    if (!this.head) {
+      this.head = newNode;
+    } else {
+      let currentPointer = this.head;
+      while (currentPointer.next) {
+        currentPointer = currentPointer.next;
+      }
+      currentPointer.next = newNode;
+    }
+    this.tail = newNode;
+    this.size++;
+  }
+
+  find(data) { //find method
+    let current = this.head;
+    while (current) {
+      if (current.head === data) {
+        return current; // Return the node with the matching data
+      }
+      current = current.next;
+    }
+    return null; // Node with the specified data was not found
+  }
+
+  addInBtw(nodeDataToBeAdded, nodeDataToBeFetched){ //add node between another node method
+        let nodeAddr = this.find(nodeDataToBeFetched);
+        if(!nodeAddr){
+              return null;  
+        }else if (nodeAddr && !nodeAddr.next) {
+          this.add(nodeDataToBeAdded);
+        } else {
+          let newNode = new Node(nodeDataToBeAdded);
+          let node1 = nodeAddr;
+          let node2 = nodeAddr.next;
+
+          node1.next = newNode;
+          newNode.next = node2;
+          this.size++;
+        }
+  };
+}
+
+const linkedList = new LinkedList();
+linkedList.add(150);
+linkedList.add(200);
+linkedList.add(300);
+linkedList.addInBtw(750, 150);
+
+console.log("linkedList", linkedList);
